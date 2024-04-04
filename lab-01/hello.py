@@ -1,3 +1,3 @@
-print("Hello, World")
-print("My name is Thuan")
-print("HUTECH University")
+print("Hello ,World!")
+print("My name is Phuoc")
+print("Hutech University")
