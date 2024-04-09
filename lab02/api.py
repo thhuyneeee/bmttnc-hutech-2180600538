@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify
-from caesar import CaesarCipher
+from cipher.caesar import CaesarCipher
 
-from transposition import TranspositionCipher
-from raifence import RailFenceCipher
-from playfair import PlayFairCipher
+from cipher.transposition import TranspositionCipher
+from cipher.raifence import RailFenceCipher
+from cipher.playfair import PlayFairCipher
 
-from vigenere import VigenereCipher
+from cipher.vigenere import VigenereCipher
 
 app= Flask (__name__)
 
@@ -29,7 +29,7 @@ def caesar_decrypt():
     return jsonify({'decrypted message': decrypted_text})
 
 railfence_cipher = RailFenceCipher()
-@app.route('/api/railfence/encrypt', methods=['POST'])
+@app.route('/api/rail_fence/encrypt', methods=['POST'])
 def encrypt():
     data = request.json
     plain_text = data['plain_text']
@@ -37,7 +37,7 @@ def encrypt():
     encrypted_text = railfence_cipher.rail_fence_encrypt(plain_text, key)
     return jsonify({'encrypted_text': encrypted_text})
 
-@app.route('/api/railfence/decrypt', methods=['POST'])  
+@app.route('/api/rail_fence/decrypt', methods=['POST'])  
 def decrypt():
     data = request.json
     cipher_text = data['cipher_text']
@@ -88,21 +88,23 @@ def playfair_decrypt():
     decrypted_text = playfair_cipher.playfair_decrypt(cipher_text,playfair_matrix)
     return jsonify({'decrypted_text': decrypted_text})
 
-trasposition_cipher = TranspositionCipher
-@app.route('/api/trasposition/encrypt', methods=['POST'])
+
+
+transposition_cipher = TranspositionCipher()
+@app.route('/api/transposition/encrypt', methods=['POST'])
 def trasposition_encrypt():
-    data = request.get_json
-    plain_text = data.get('plain text')
-    key= int(data.get('key'))
-    encrypted_text = trasposition_cipher.encrypt(plain_text, key)
+    data = request.json
+    plain_text = data['plain_text']
+    key= int(data['key'])
+    encrypted_text = transposition_cipher.encrypt(plain_text, key)
     return jsonify({'encrypted_text':encrypted_text})
     
-@app.route('/api/trasposition/decrypt', methods=['POST'])
+@app.route('/api/transposition/decrypt', methods=['POST'])
 def transposition_decrypt():
-    data = request.get_json
-    plain_text = data.get('plain text')
-    key= int(data.get('key'))
-    decrypted_text = trasposition_cipher.decrypt(plain_text, key)
+    data = request.json
+    cipher_text = data['cipher_text']
+    key= int(data['key'])
+    decrypted_text = transposition_cipher.decrypt(cipher_text, key)
     return jsonify({'decrypted_text': decrypted_text})
     
 
